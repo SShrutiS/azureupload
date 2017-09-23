@@ -1,0 +1,38 @@
+<%= form_with(model: report, local: true) do |form| %>
+
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :report_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :yrmnth %>
+    <%= form.text_field :yrmnth, id: :report_yrmnth %>
+  </div>
+
+  <div class="field">
+    <%= form.label :file %>
+    <%= form.file_field :file, id: :report_file %>
+  </div>
+
+  <div class="field">
+    <%= form.label :link %>
+    <%= form.text_field :link, id: :report_link %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :approval %>
+    <%= form.text_field :approval, id: :report_approval %>
+  </div>
+
+  
+  <div class="field">
+    <%= form.label :comment %>
+    <%= form.text_field :comment, id: :report_comment %>
+  </div>
+  
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
