@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'sidekiq'
 gem 'azure-storage'
-
+gem 'httparty'
 group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
@@ -45,6 +45,16 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+    gem 'railroady'
+  gem 'launchy'
+  gem "guard"
+  gem "guard-rspec"
+  gem 'rails-controller-testing'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'awesome_print'
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :development do

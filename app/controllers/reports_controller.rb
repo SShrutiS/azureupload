@@ -1,44 +1,92 @@
 class ReportsController < ApplicationController
+  before_action :set_report, only: [:show, :edit, :update, :destroy]
 
-
+  # GET /reports
+  # GET /reports.json
   def index
-    @reports = Report.all.order(id: 'asc')
-    ap @reports
+    @reports = Report.all
   end
 
+  # GET /reports/1
+  # GET /reports/1.json
+  def show
+  end
+
+  # GET /reports/new
   def new
     @report = Report.new
   end
 
-  # def create
-  #   @report = Report.new(params[:report].permit(:name, :subject, :level, :credits))
-  #   if @report.save
-  #     redirect_to reports_path
-  #   else
-  #     render 'new'
-  #   end
-  # end
+  # GET /reports/1/edit
+  def edit
+  end
 
-
+  # POST /reports
+  # POST /reports.json
   def create
-    name = params[:name]
-    yrmnth = params[:yrmnth]
-    link = params[:link]
-    file = params[:file]
+    name = params[:report][:name]
+    yrmnth = params[:report][:yrmnth]
+    link = params[:report][:link]
+    file = params[:report][:file]
+    approval = params[:report][:approval]
+    comment = params[:report][:comment]
+    # binding.pry
     if !file.blank?
+      # binding.pry
       orig = file.original_filename
       token = SecureRandom.hex(64)
       path = "#{Rails.root}/uploads/#{token}"
       FileUtils.cp file.path, path
-      UploadImagesJob.perform_later(name, orig, token, path, file.content_type, link, approval, comment)
+      UploadImagesJob.perform_later(name, yrmnth, link, orig, token, path, file.content_type, approval, comment)
     else
-      Report.create!(name: name, yrmnth: yrmnth, link: link, approval: approval, comment: comment)
-    end
+      @report = Report.new(report_params)
 
-    
-    # redirect_to sections_klass_path(klass)
+    respond_to do |format|
+      if @report.save
+        format.html { redirect_to @report, notice: 'Report was successfully created.' }
+        format.json { render :show, status: :created, location: @report }
+      else
+        format.html { render :new }
+        format.json { render json: @report.errors, status: :unprocessable_entity }
+      end
+    end
+    end
   end
 
- 
+  # PATCH/PUT /reports/1
+  # PATCH/PUT /reports/1.json
+  def update
+    respond_to do |format|
+      if @report.update(report_params)
+        format.html { redirect_to @report, notice: 'Report was successfully updated.' }
+        format.json { render :show, status: :ok, location: @report }
+      else
+        format.html { render :edit }
+        format.json { render json: @report.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
+  # DELETE /reports/1
+  # DELETE /reports/1.json
+  def destroy
+    @report.destroy
+    respond_to do |format|
+      format.html { redirect_to reports_url, notice: 'Report was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_report
+      @report = Report.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def report_params
+      params[:report].permit(:name, :yrmnth,  :link, :approval, :comment)
+     
+    end
 end
+

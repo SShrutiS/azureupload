@@ -1,19 +1,29 @@
-<%= form_with(model: report, local: true) do |form| %>
+<%= form_with(model: report, local: true , html: {multipart: true}) do |form| %>
+  <% if report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(report.errors.count, "error") %> prohibited this report from being saved:</h2>
 
+      <ul>
+      <% report.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name, id: :report_name %>
+    <%= form.text_field :name, id: :name %>
   </div>
 
   <div class="field">
     <%= form.label :yrmnth %>
-    <%= form.text_field :yrmnth, id: :report_yrmnth %>
+    <%= form.text_field :yrmnth, id: :yrmnth %>
   </div>
 
   <div class="field">
     <%= form.label :file %>
-    <%= form.file_field :file, id: :report_file %>
+    <%= form.file_field :file, id: :file %>
   </div>
 
   <div class="field">
